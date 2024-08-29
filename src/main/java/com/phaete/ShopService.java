@@ -1,10 +1,12 @@
 package com.phaete;
 
+import java.util.Objects;
+
 public class ShopService {
 
     // Variables
-    OrderRepo orderRepo;
-    ProductRepo productRepo = new ProductRepo();
+    private OrderRepo orderRepo;
+    private ProductRepo productRepo = new ProductRepo();
 
     // Constructors
     public ShopService(OrderRepo orderRepo) {
@@ -20,16 +22,41 @@ public class ShopService {
         }
     }
 
-    public void productInEnoughStock(Order order) {
+    public void placeOrder(Order order) {
+        orderRepo.addOrder(order);
         for (Product product : order.products().keySet()) {
-            if (order.products().get(product) > product.stock()) {
-                System.out.println("Not enough stock available for the product: " + product.id());
-                break;
-            }
+            System.out.println(product);
+            System.out.println(order.products().get(product));
+            productRepo.decreaseStock(product, order.products().get(product));
         }
     }
 
-    public void placeOrder(Order order) {
-        orderRepo.addOrder(order);
+    public OrderRepo getOrderRepo() {
+        return orderRepo;
+    }
+
+    public ProductRepo getProductRepo() {
+        return productRepo;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ShopService that = (ShopService) o;
+        return Objects.equals(orderRepo, that.orderRepo) && Objects.equals(productRepo, that.productRepo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(orderRepo, productRepo);
+    }
+
+    @Override
+    public String toString() {
+        return "ShopService{" +
+                "orderRepo=" + orderRepo +
+                ", productRepo=" + productRepo +
+                '}';
     }
 }

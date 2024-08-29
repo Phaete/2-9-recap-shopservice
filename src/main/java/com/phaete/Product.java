@@ -8,4 +8,7 @@ public record Product(
         BigDecimal price,
         int stock
 ) {
+    public boolean hasEnoughStock(int quantity) {
+        return stock >= quantity;
+    }
 }
