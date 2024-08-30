@@ -57,6 +57,7 @@ public class Main {
         shopServiceMap.placeOrder(applesAndOranges);
         shopServiceMap.placeOrder(fruits);
 
+        /*
         // Tony wants to modify his order
         Map<Product, Integer> modifications = new HashMap<>();
         modifications.put(apple, 5);
@@ -69,5 +70,6 @@ public class Main {
         }
 
         System.out.println(orderMapRepo.getOrder(applesAndOranges.id()));
+        */
     }
 }
