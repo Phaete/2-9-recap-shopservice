@@ -8,30 +8,30 @@ public class Main {
     public static void main(String[] args) {
 
         // Products
-        Product apple = new Product(1, "Apple", new BigDecimal("0.09"), 100);
-        Product banana = new Product(2, "Banana", new BigDecimal("0.29"), 100);
-        Product orange = new Product(3, "Orange", new BigDecimal("0.49"), 50);
-        Product peach = new Product(4, "Peach", new BigDecimal("0.69"), 50);
+        Product apple = new Product(1, "Apple", new BigDecimal("0.09"));
+        Product banana = new Product(2, "Banana", new BigDecimal("0.29"));
+        Product orange = new Product(3, "Orange", new BigDecimal("0.49"));
+        Product peach = new Product(4, "Peach", new BigDecimal("0.69"));
 
         // List Repos
         OrderRepo orderListRepo = new OrderListRepo();
         ShopService shopServiceList = new ShopService(orderListRepo);
 
         // Add products to the shopServiceList
-        shopServiceList.getProductRepo().addProduct(apple);
-        shopServiceList.getProductRepo().addProduct(banana);
-        shopServiceList.getProductRepo().addProduct(orange);
-        shopServiceList.getProductRepo().addProduct(peach);
+        shopServiceList.getProductRepo().addProduct(apple, 100);
+        shopServiceList.getProductRepo().addProduct(banana, 100);
+        shopServiceList.getProductRepo().addProduct(orange, 50);
+        shopServiceList.getProductRepo().addProduct(peach, 50);
 
         // Map Repos
         OrderRepo orderMapRepo = new OrderMapRepo();
         ShopService shopServiceMap = new ShopService(orderMapRepo);
 
         // Add products to the shopServiceMap
-        shopServiceMap.getProductRepo().addProduct(apple);
-        shopServiceMap.getProductRepo().addProduct(banana);
-        shopServiceMap.getProductRepo().addProduct(orange);
-        shopServiceMap.getProductRepo().addProduct(peach);
+        shopServiceMap.getProductRepo().addProduct(apple, 100);
+        shopServiceMap.getProductRepo().addProduct(banana, 100);
+        shopServiceMap.getProductRepo().addProduct(orange, 50);
+        shopServiceMap.getProductRepo().addProduct(peach, 50);
 
         // Create orders
         Order orderApples = new Order(1, "Peter Parker");
@@ -57,7 +57,8 @@ public class Main {
         shopServiceMap.placeOrder(applesAndOranges);
         shopServiceMap.placeOrder(fruits);
 
-        /*
+        System.out.println(orderMapRepo.getOrder(applesAndOranges.id()));
+        System.out.println("_______________________________________________");
         // Tony wants to modify his order
         Map<Product, Integer> modifications = new HashMap<>();
         modifications.put(apple, 5);
@@ -70,6 +71,6 @@ public class Main {
         }
 
         System.out.println(orderMapRepo.getOrder(applesAndOranges.id()));
-        */
+
     }
 }

@@ -1,6 +1,5 @@
 package com.phaete;
 
-import javax.xml.transform.Source;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,11 +20,7 @@ public record Order(
     }
 
     public void addProduct(Product product, int quantity) {
-        if (product.hasEnoughStock(quantity)) {
-            products.put(product, quantity);
-        } else {
-            System.out.println("Can't add the specified quantity of the product: " + product.id() + " to the order as there's not enough in stock.");
-        }
+        products.put(product, quantity);
     }
 
     public void removeProduct(Product product) {

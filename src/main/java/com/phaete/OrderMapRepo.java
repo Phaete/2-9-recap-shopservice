@@ -56,7 +56,7 @@ public class OrderMapRepo implements OrderRepo {
         boolean success = true;
         Map<Integer, Order> orderMapCopy = new HashMap<>(orderMap);
         // Check if all products in the order can be changed before actually changing anything
-        for (Product product : orderMapCopy.get(order.id()).products().keySet()) {
+        for (Product product : orderMap.get(order.id()).products().keySet()) {
             // check if the product id of the product in the order matches the product id of the product in the modifications
             for (Product modifiedProduct : modifications.keySet()) {
                 if(product.id() == modifiedProduct.id()) {

@@ -1,20 +1,18 @@
 package com.phaete;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class ProductRepo {
 
     // Variables
-    private List<Product> productRepo = new ArrayList<>();
+    private Map<Product, Integer> productRepo = new HashMap<>();
 
     // Constructors
 
 
     // Methods
-    public void addProduct(Product product) {
-        productRepo.add(product);
+    public void addProduct(Product product, Integer stock) {
+        productRepo.put(product, stock);
     }
 
     public void removeProduct(Product product) {
@@ -22,7 +20,7 @@ public class ProductRepo {
     }
 
     public Product getProduct(int productId) {
-        for (Product product : productRepo) {
+        for (Product product : productRepo.keySet()) {
             if (product.id() == productId) {
                 return product;
             }
@@ -31,39 +29,46 @@ public class ProductRepo {
     }
 
     public void increaseStock(Product product, int quantity) {
-        if (productRepo.contains(product)) {
-            productRepo.set(
-                    productRepo.indexOf(product),
-                    new Product(
-                            product.id(),
-                            product.name(),
-                            product.price(),
-                            product.stock() + quantity
-                    )
-            );
+        if (productRepo.containsKey(product)) {
+                productRepo.put(product, productRepo.get(product) + quantity);
         } else {
             System.out.println("Can not change the stock of the product: " + product.id() + " as it is not in the list.");
         }
     }
 
     public void decreaseStock(Product product, int quantity) {
-        if (productRepo.contains(product)) {
-            productRepo.set(
-                    productRepo.indexOf(product),
-                    new Product(
-                            product.id(),
-                            product.name(),
-                            product.price(),
-                            product.stock() - quantity
-                    )
-            );
+        if (productRepo.containsKey(product) && hasEnoughStock(product, quantity)) {
+            productRepo.put(product, productRepo.get(product) - quantity);
         } else {
             System.out.println("Can not change the stock of the product: " + product.id() + " as it is not in the list.");
         }
     }
 
-    public List<Product> getProducts() {
+    public boolean hasEnoughStock(Product product, int quantity) {
+        if (productRepo.containsKey(product)) {
+            return productRepo.get(product) >= quantity;
+        } else {
+            return false;
+        }
+    }
+
+    public Set<Product> getProducts() {
+        return productRepo.keySet();
+    }
+
+    public Map<Product, Integer> getProductRepo() {
         return productRepo;
+    }
+
+    public void setProductRepo(Map<Product, Integer> productRepo) {
+        this.productRepo = productRepo;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductRepo{" +
+                "productRepo=" + productRepo +
+                '}';
     }
 
     @Override
@@ -77,12 +82,5 @@ public class ProductRepo {
     @Override
     public int hashCode() {
         return Objects.hashCode(productRepo);
-    }
-
-    @Override
-    public String toString() {
-        return "ProductRepo{" +
-                "productRepo=" + productRepo +
-                '}';
     }
 }
