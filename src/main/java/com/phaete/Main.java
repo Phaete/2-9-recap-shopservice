@@ -61,8 +61,13 @@ public class Main {
         Map<Product, Integer> modifications = new HashMap<>();
         modifications.put(apple, 5);
         modifications.put(orange, 3);
-        applesAndOranges.modifyOrder(modifications);
+        boolean success = shopServiceMap.modifyOrder(applesAndOranges, modifications);
+        if (success) {
+            System.out.println("Successfully modified the order.");
+        } else {
+            System.out.println("Could not modify the order, reverting back to previous state.");
+        }
 
-        System.out.println(applesAndOranges);
+        System.out.println(orderMapRepo.getOrder(applesAndOranges.id()));
     }
 }

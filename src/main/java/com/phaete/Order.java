@@ -1,5 +1,6 @@
 package com.phaete;
 
+import javax.xml.transform.Source;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,14 +28,13 @@ public record Order(
         }
     }
 
-    public void modifyOrder(Map<Product, Integer> modifications) {
-        // for each suggested modification, check if the product exists in the order and change the value as per the suggested modification
-        for (Product product : products.keySet()) {
-            if (modifications.containsKey(product)) {
-                products.put(product, modifications.get(product)); // overwrite the old value of the product with the new value
-            } else {
-                System.out.println("The order does not contain the Product with the id: " + product.id());
+    public void removeProduct(Product product) {
+        for (Product productKey : products.keySet()) {
+            if (productKey.id() == product.id()) {
+                products.remove(productKey);
+                break;
             }
         }
+        System.out.println("Could not remove the specified product, as it is not part of the order.");
     }
 }

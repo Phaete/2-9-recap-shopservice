@@ -2,14 +2,14 @@ package com.phaete;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 public interface OrderRepo {
 
-    public void addOrder(Order order);
-    public void removeOrder(Order order);
-    public Order getOrder(int orderId);
-    public List<Order> getOrders();
-    public BigDecimal getTotalPrice(int orderId);
-
-
+    void addOrder(Order order);
+    void removeOrder(Order order);
+    Order getOrder(int orderId);
+    List<Order> getOrders();
+    BigDecimal getTotalPrice(int orderId);
+    boolean modifyOrder(Order order, Map<Product, Integer> modifications);
 }

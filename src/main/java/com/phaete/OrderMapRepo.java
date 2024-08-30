@@ -52,6 +52,29 @@ public class OrderMapRepo implements OrderRepo {
     }
 
     @Override
+    public boolean modifyOrder(Order order, Map<Product, Integer> modifications) {
+        boolean success = true;
+        Map<Integer, Order> orderMapCopy = new HashMap<>(orderMap);
+        // Check if all products in the order can be changed before actually changing anything
+        for (Product product : orderMapCopy.get(order.id()).products().keySet()) {
+            // check if the product id of the product in the order matches the product id of the product in the modifications
+            for (Product modifiedProduct : modifications.keySet()) {
+                if(product.id() == modifiedProduct.id()) {
+                    orderMapCopy.get(order.id()).removeProduct(product);
+                    orderMapCopy.get(order.id()).addProduct(modifiedProduct, modifications.get(modifiedProduct));
+                    break;
+                } else {
+                    success = false;
+                }
+            }
+        }
+        if (success) {
+            orderMap = orderMapCopy;
+        }
+        return success;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

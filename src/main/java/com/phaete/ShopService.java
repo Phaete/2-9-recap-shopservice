@@ -1,5 +1,6 @@
 package com.phaete;
 
+import java.util.Map;
 import java.util.Objects;
 
 public class ShopService {
@@ -14,6 +15,13 @@ public class ShopService {
     }
 
     // Methods
+
+    /**
+     * Checks if all the products in the order exist in the product repository.
+     * Prints a message to the console if the product does not exist.
+     *
+     * @param order The order to be checked.
+     */
     public void productOfOrderExists(Order order) {
         for (Product product : order.products().keySet()) {
             if (productRepo.getProduct(product.id()) == null) {
@@ -22,13 +30,54 @@ public class ShopService {
         }
     }
 
+    /**
+     * Checks if all the products in the order have enough stock in the product repository.
+     * Prints a message to the console for each product that does not have enough stock.
+     *
+     * @param order The order to be checked.
+     */
+    public void productStockOfOrderExists(Order order) {
+        for (Product product : order.products().keySet()) {
+            if (!productRepo.getProduct(product.id()).hasEnoughStock(order.products().get(product))) {
+                System.out.println("Product is not in stock: " + product.id());
+            }
+        }
+    }
+
+    /**
+     * Places an order. This involves adding the order to the order repository, and subtracting the quantities of the
+     * products from the product repository.
+     *
+     * @param order The order to be placed
+     */
     public void placeOrder(Order order) {
         orderRepo.addOrder(order);
         for (Product product : order.products().keySet()) {
-            System.out.println(product);
-            System.out.println(order.products().get(product));
-            productRepo.decreaseStock(product, order.products().get(product));
+            productRepo.decreaseStock(
+                    productRepo.getProduct(product.id()),
+                    order.products().get(product)
+            );
         }
+    }
+
+    /**
+     * Removes an order. This involves removing the order from the order repository, and increasing the quantities of
+     * the products in the product repository.
+     *
+     * @param order The order to be removed
+     */
+    public void removeOrder(Order order) {
+        orderRepo.removeOrder(order);
+        for (Product product : order.products().keySet()) {
+            productRepo.increaseStock(
+                    productRepo.getProduct(product.id()),
+                    order.products().get(product)
+            );
+        }
+    }
+
+    public boolean modifyOrder(Order order, Map<Product, Integer> modifications) {
+        return orderRepo.modifyOrder(order, modifications);
     }
 
     public OrderRepo getOrderRepo() {
